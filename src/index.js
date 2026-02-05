@@ -1,10 +1,11 @@
 const express = require("express");
 const cors = require("cors");
-const morgan = require("morgan");
+const path = require("path");
 require("dotenv").config();
 const { httpLogger } = require("./lib/winstonLogger");
 
 const app = express();
+
 
 // Middleware
 // app.use(cors({
@@ -16,10 +17,15 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(morgan("dev"));
 
 // Custom Middleware to log request details and execution time
 app.use(httpLogger);
+
+
+// Root route → return index.html
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/index.html"));
+});
 
 // Routes
 app.use("/api/image", require("./routes/image.routes"));
