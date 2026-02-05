@@ -8,7 +8,11 @@ const app = express();
 
 
 // Middleware
-app.use(cors())
+// Allow all origins
+app.use(cors({ origin: "*" }));
+
+// Handle preflight OPTIONS requests globally
+app.options("*", cors({ origin: "*" }));
 
 app.use(express.json());
 
