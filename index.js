@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 require("dotenv").config();
-const { httpLogger } = require("./lib/winstonLogger");
+const { httpLogger } = require("./src/lib/winstonLogger");
 
 const app = express();
 
@@ -24,12 +24,12 @@ app.use(httpLogger);
 
 // Root route → return index.html
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "../public/index.html"));
+  res.sendFile(path.join(__dirname, "./public/index.html"));
 });
 
 // Routes
-app.use("/api/image", require("./routes/image.routes"));
-app.use("/api/video", require("./routes/video.routes"));
+app.use("/api/image", require("./src/routes/image.routes"));
+app.use("/api/video", require("./src/routes/video.routes"));
 
 // Error handling middleware
 app.use((err, req, res, next) => {
