@@ -3,22 +3,20 @@ const cors = require("cors");
 const path = require("path");
 require("dotenv").config();
 const { httpLogger } = require("./lib/winstonLogger");
-const { handler } = require("./middleware/handler.middleware");
 
 const app = express();
 
 
-// app.use(
-//   cors({
-//     origin: "*",
-//     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-//     allowedHeaders: ["Content-Type", "Authorization", "*"],
-//   })
-// );
+// Middleware
+app.use(cors({
+  origin: 'https://cord4-ai-practical-be.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+}));
 
+// app.use(cors());
 app.use(express.json());
-
-app.use(handler)
 
 // Custom Middleware to log request details and execution time
 app.use(httpLogger);
