@@ -22,7 +22,7 @@ const output = await replicate.run("minimax/video-01", { input });
 
 // To access the file URL:
 console.log(output.url());
-//=> "https://replicate.delivery/.../output.mp4"
+
   return output?.[0];
 };
 /**
