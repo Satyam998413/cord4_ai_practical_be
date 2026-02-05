@@ -3,15 +3,22 @@ const cors = require("cors");
 const path = require("path");
 require("dotenv").config();
 const { httpLogger } = require("./lib/winstonLogger");
+const { handler } = require("./middleware/handler.middleware");
 
 const app = express();
 
 
-
-app.use(cors());
-app.options("*", cors());
+// app.use(
+//   cors({
+//     origin: "*",
+//     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+//     allowedHeaders: ["Content-Type", "Authorization", "*"],
+//   })
+// );
 
 app.use(express.json());
+
+app.use(handler)
 
 // Custom Middleware to log request details and execution time
 app.use(httpLogger);
