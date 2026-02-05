@@ -1,5 +1,4 @@
 const express = require("express");
-const cors = require("cors");
 const path = require("path");
 require("dotenv").config();
 const { httpLogger } = require("./lib/winstonLogger");
@@ -7,12 +6,6 @@ const { httpLogger } = require("./lib/winstonLogger");
 const app = express();
 
 
-// Middleware
-// Allow all origins
-app.use(cors({ origin: "*" }));
-
-// Handle preflight OPTIONS requests globally
-app.options("*", cors({ origin: "*" }));
 
 app.use(express.json());
 
