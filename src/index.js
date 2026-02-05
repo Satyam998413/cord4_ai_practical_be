@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const path = require("path");
 require("dotenv").config();
 const { httpLogger } = require("./lib/winstonLogger");
@@ -6,24 +7,28 @@ const { httpLogger } = require("./lib/winstonLogger");
 const app = express();
 
 
+// Middleware
+app.use(cors({
+  origin: "https://cord4-ai-practical-fe.vercel.app/",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+}));
 
 app.use(express.json());
 
 // Custom Middleware to log request details and execution time
 app.use(httpLogger);
 
-app.get('/', (req, res) => {
-  res.send('Hello World')
-})
+
+// Root route → return index.html
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/index.html"));
+});
 
 app.get('/about', (req, res) => {
   res.send('About route 🎉 ')
 })
-
-// // Root route → return index.html
-// app.get("/", (req, res) => {
-//   res.sendFile(path.join(__dirname, "../public/index.html"));
-// });
 
 // Routes
 app.use("/api/image", require("./routes/image.routes"));
