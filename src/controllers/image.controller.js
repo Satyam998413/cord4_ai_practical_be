@@ -16,4 +16,8 @@ const generateImage = async (req, res) => {
   }
 };
 
-module.exports = { generateImage };
+const getData = async (req, res) => {
+  return res.send({data:'Yes i got it bro'})
+};
+
+module.exports = { generateImage,getData };
