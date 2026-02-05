@@ -7,24 +7,14 @@ const { httpLogger } = require("./lib/winstonLogger");
 const app = express();
 
 
-/**
- *CORS CONFIG
- */
 app.use(
   cors({
-    origin: [
-      "https://cord4-ai-practical-fe.vercel.app"
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "*"],
   })
 );
 
-/**
- * IMPORTANT: handle preflight
- */
-app.options("*", cors());
 app.use(express.json());
 
 // Custom Middleware to log request details and execution time

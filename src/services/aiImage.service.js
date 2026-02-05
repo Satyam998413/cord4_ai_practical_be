@@ -1,5 +1,4 @@
 const Replicate = require("replicate");
-const OpenAI = require("openai");
 
 /**
  * Replicate client
@@ -8,43 +7,26 @@ const replicate = new Replicate({
   auth: process.env.REPLICATE_API_TOKEN,
 });
 
-/**
- * OpenAI client
- */
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
 
 /**
  * Generate image using Replicate (SDXL Lightning)
  */
 const createImageWithReplicate = async (prompt) => {
-  const output = await replicate.run(
-    "bytedance/sdxl-lightning",
-    {
-      input: {
-        prompt,
-        num_inference_steps: 4,
-        guidance_scale: 1,
-      },
-    }
-  );
+  const input = {
+    prompt:prompt,
+    aspect_ratio: "16:9",
+    output_format: "jpg",
+    safety_filter_level: "block_medium_and_above",
+  };
 
-  return output[0];
+  const output = await replicate.run("google/imagen-4", { input });
+
+  // To access the file URL:
+  console.log(output.url().href); //=> "http://example.com"
+  // Replicate returns an array of image URLs
+  return output.url().href;
 };
 
-/**
- * Generate image using OpenAI (DALL·E / GPT Image)
- */
-const createImageWithOpenAI = async (prompt) => {
-  const result = await openai.images.generate({
-    model: "gpt-image-1",
-    prompt,
-    size: "1024x1024",
-  });
-
-  return result.data[0].url;
-};
 
 /**
  * Main image generator
@@ -52,13 +34,9 @@ const createImageWithOpenAI = async (prompt) => {
  */
 const createImage = async (prompt, provider = "replicate") => {
   try {
-    console.log('---provider---------',prompt,provider)
-    if (provider === "replicate") {
+    console.log("---provider---------", prompt, provider);
       return await createImageWithReplicate(prompt);
-    }
-
-    // default → OpenAI
-    return await createImageWithOpenAI(prompt);
+   
   } catch (error) {
     console.error("Image generation failed:", error.message);
     throw error;
@@ -67,6 +45,5 @@ const createImage = async (prompt, provider = "replicate") => {
 
 module.exports = {
   createImage,
-  createImageWithOpenAI,
   createImageWithReplicate,
 };

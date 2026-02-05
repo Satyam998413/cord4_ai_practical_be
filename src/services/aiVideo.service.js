@@ -11,19 +11,18 @@ const replicate = new Replicate({
  * Replicate Video (Stable Video Diffusion)
  * Image → Video
  */
-const createVideoWithReplicate = async (imageUrl) => {
-  const output = await replicate.run(
-    "stability-ai/stable-video-diffusion",
-    {
-      input: {
-        input_image: imageUrl,
-        motion_bucket_id: 127,
-        fps: 6,
-        num_frames: 14,
-      },
-    }
-  );
+const createVideoWithReplicate = async (imageUrl,prompt) => {
+  const input = {
+    prompt: prompt,
+    duration: 10,
+    first_frame_image: imageUrl
+};
 
+const output = await replicate.run("minimax/video-01", { input });
+
+// To access the file URL:
+console.log(output.url());
+//=> "https://replicate.delivery/.../output.mp4"
   return output?.[0];
 };
 /**
@@ -33,7 +32,7 @@ const createVideo = async ({ imageUrl, prompt, provider = "replicate" }) => {
   try {
 
     // default → Replicate
-    return await createVideoWithReplicate(imageUrl);
+    return await createVideoWithReplicate(imageUrl,prompt);
   } catch (error) {
     console.error(
       "Video generation failed:",
