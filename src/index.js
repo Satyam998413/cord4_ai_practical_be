@@ -9,13 +9,13 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: 'https://cord4-ai-practical-fe.vercel.app/',
+  origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
 }));
 
-// app.use(cors());
+
 app.use(express.json());
 
 // Custom Middleware to log request details and execution time
